@@ -59,18 +59,20 @@ for month in months.keys():
 
   days = [x for x in range(1, months[month]['days'] + 1)]
 
+  print(month)
   for day in days:
+    print(day)
     if not os.path.isdir("scrapper/files/%s/%s" % (months[month]['number'],day)):
       os.mkdir("scrapper/files/%s/%s/" % (months[month]['number'],day))
 
     url = 'https://efemerides20.com/%s' % (str(day) + '-de-' + month,)
 
-    html = urlopen(url).read()
+    html = urlopen(url).read().decode('utf-8', errors='ignore').replace(u'\u200b', ' ')
 
-    page = BeautifulSoup(html, 'html.parser')
+    page = BeautifulSoup(html, 'html5lib', from_encoding='utf-8')
 
     ephemeris = [p.get_text().strip().replace(u'\xa0', u' ') for p in page.find_all('section', class_='efemeride-list')[0].find_all('p')]
 
-    with open("scrapper/files/%s/%s/list.txt" % (months[month]['number'],day), 'w') as file:
+    with open("scrapper/files/%s/%s/list.txt" % (months[month]['number'],day), 'w', encoding='utf-8') as file:
       for line in ephemeris:
         file.write('%s\n' % line)
