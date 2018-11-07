@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 "beautifulsoup4" = "*"
 ask-sdk = "*"
-ask-sdk-dynamodb-persistence-adapter = "*"
 "boto3" = "*"
 "html5lib" = "*"
 pymongo = "*"
