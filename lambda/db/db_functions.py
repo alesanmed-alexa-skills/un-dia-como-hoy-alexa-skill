@@ -9,29 +9,39 @@ from pymongo import MongoClient
 import db_utils
 from configurations import skill_config
 
-def get_event_for_user(user_id, date):
-    client = db_utils.connect()
-    db = client[skill_config.DB_NAME]
+import datetime
 
+def retrieve_random_event(handler_input):
+    req_envelope = handler_input.request_envelope
+
+    user_id = req_envelope.context.System.user.userId
+
+    date = datetime.datetime.now()
+
+    date = '{}/{}'.format(str(date.day), str(date.month))
+
+    random_event = __get_event_for_user(user_id, date)['event']
+
+    return random_event
+
+def __get_event_for_user(user_id, date):
     event = None
 
-    if not user_exists(user_id, date):
-        insert_new_user(user_id, date)
+    if not __user_exists(user_id, date):
+        __insert_new_user(user_id, date)
     
-    if get_number_date_events(date) == get_number_already_fetched_events(user_id, date):
-        reset_user_fetched_events(user_id, date)
+    if __get_number_date_events(date) == __get_number_already_fetched_events(user_id, date):
+        __reset_user_fetched_events(user_id, date)
         
-    fetched_events = get_already_fetched_events(user_id, date)
+    fetched_events = __get_already_fetched_events(user_id, date)
 
-    event = get_random_event_not_fetched(date, fetched_events)
+    event = __get_random_event_not_fetched(date, fetched_events)
     
-    add_user_fetched_event(user_id, date, event['_id'])
-    
-    db_utils.close(client)
+    __add_user_fetched_event(user_id, date, event['_id'])
 
     return event
 
-def add_user_fetched_event(user_id, date, event_id):
+def __add_user_fetched_event(user_id, date, event_id):
     client = db_utils.connect()
     db = client[skill_config.DB_NAME]
 
@@ -47,7 +57,7 @@ def add_user_fetched_event(user_id, date, event_id):
     db_utils.close(client)
 
 
-def get_random_event_not_fetched(date, already_fetched):
+def __get_random_event_not_fetched(date, already_fetched):
     client = db_utils.connect()
     db = client[skill_config.DB_NAME]
 
@@ -69,7 +79,7 @@ def get_random_event_not_fetched(date, already_fetched):
 
     return list(events)[0]
 
-def reset_user_fetched_events(user_id, date):
+def __reset_user_fetched_events(user_id, date):
     client = db_utils.connect()
     db = client[skill_config.DB_NAME]
 
@@ -84,7 +94,7 @@ def reset_user_fetched_events(user_id, date):
 
     db_utils.close(client)
 
-def get_number_date_events(event_date):
+def __get_number_date_events(event_date):
     client = db_utils.connect()
     db = client[skill_config.DB_NAME]
 
@@ -96,10 +106,10 @@ def get_number_date_events(event_date):
 
     return res
 
-def get_number_already_fetched_events(user_id, date):
-    return len(get_already_fetched_events(user_id, date))
+def __get_number_already_fetched_events(user_id, date):
+    return len(__get_already_fetched_events(user_id, date))
 
-def get_already_fetched_events(user_id, date):
+def __get_already_fetched_events(user_id, date):
     client = db_utils.connect()
     db = client[skill_config.DB_NAME]
 
@@ -112,7 +122,7 @@ def get_already_fetched_events(user_id, date):
 
     return res['fetched_events']
 
-def user_exists(user_id, date):
+def __user_exists(user_id, date):
     client = db_utils.connect()
     db = client[skill_config.DB_NAME]
 
@@ -125,7 +135,7 @@ def user_exists(user_id, date):
 
     return res == 1
 
-def insert_new_user(user_id, date):
+def __insert_new_user(user_id, date):
     client = db_utils.connect()
     db = client[skill_config.DB_NAME]
 
@@ -134,6 +144,3 @@ def insert_new_user(user_id, date):
         'date': date,
         'fetched_events': []
     })
-
-if __name__ == '__main__':
-    print(get_event_for_user('1', '8/11'))
