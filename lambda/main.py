@@ -8,8 +8,11 @@ from ask_sdk_core.dispatch_components import AbstractExceptionHandler
 from ask_sdk_core.utils import is_request_type, is_intent_name
 from ask_sdk_core.handler_input import HandlerInput
 
-from ask_sdk_model.ui import SimpleCard
 from ask_sdk_model import Response
+
+from db import db_functions
+
+import datetime
 
 sb = SkillBuilder()
 
@@ -24,27 +27,23 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speech_text = "Welcome to the Alexa Skills Kit, you can say hello!"
-
-        handler_input.response_builder.speak(speech_text).set_card(
-            SimpleCard("Hello World", speech_text)).set_should_end_session(
-            False)
+        
+        handler_input.response_builder.speak(db_functions.retrieve_random_event(handler_input))
+        
         return handler_input.response_builder.response
 
 
-class HelloWorldIntentHandler(AbstractRequestHandler):
-    """Handler for Hello World Intent."""
+class GetNewEventIntentHandler(AbstractRequestHandler):
+    """Handler for Get New Event Intent."""
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
-        return is_intent_name("HelloWorldIntent")(handler_input)
+        return is_intent_name("GetNewEventIntent")(handler_input)
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speech_text = "Hello Python World from Classes!"
 
-        handler_input.response_builder.speak(speech_text).set_card(
-            SimpleCard("Hello World", speech_text)).set_should_end_session(
-            True)
+        handler_input.response_builder.speak(db_functions.retrieve_random_event(handler_input))
+
         return handler_input.response_builder.response
 
 
@@ -56,11 +55,10 @@ class HelpIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speech_text = "You can say hello to me!"
+        speech_text = "Prueba a decir cuentame algo interesante"
 
-        handler_input.response_builder.speak(speech_text).ask(
-            speech_text).set_card(SimpleCard(
-                "Hello World", speech_text))
+        handler_input.response_builder.ask(
+            speech_text)
         return handler_input.response_builder.response
 
 
@@ -73,10 +71,10 @@ class CancelOrStopIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speech_text = "Goodbye!"
+        speech_text = "Hasta la próxima!"
 
-        handler_input.response_builder.speak(speech_text).set_card(
-            SimpleCard("Hello World", speech_text))
+        handler_input.response_builder.speak(speech_text)
+        
         return handler_input.response_builder.response
 
 
@@ -91,10 +89,8 @@ class FallbackIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speech_text = (
-            "The Hello World skill can't help you with that.  "
-            "You can say hello!!")
-        reprompt = "You can say hello!!"
+        speech_text = "No puedo ayudarte con eso..."
+        reprompt = "Prueba a decir cuentame algo interesante"
         handler_input.response_builder.speak(speech_text).ask(reprompt)
         return handler_input.response_builder.response
 
@@ -122,14 +118,13 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
         # type: (HandlerInput, Exception) -> Response
         logger.error(exception, exc_info=True)
 
-        speech = "Sorry, there was some problem. Please try again!!"
-        handler_input.response_builder.speak(speech).ask(speech)
+        speech = "Parece que algo ha fallado, prueba a decir cuentame algo interesante"
+        handler_input.response_builder.ask(speech)
 
         return handler_input.response_builder.response
 
-
 sb.add_request_handler(LaunchRequestHandler())
-sb.add_request_handler(HelloWorldIntentHandler())
+sb.add_request_handler(GetNewEventIntentHandler())
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(FallbackIntentHandler())
