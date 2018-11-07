@@ -5,10 +5,15 @@ name = "pypi"
 
 [packages]
 "beautifulsoup4" = "*"
-ask-sdk-core = "*"
+ask-sdk = "*"
+ask-sdk-dynamodb-persistence-adapter = "*"
+"boto3" = "*"
+"html5lib" = "*"
+pymongo = "*"
 
 [dev-packages]
 pylint = "*"
+"autopep8" = "*"
 
 [requires]
 python_version = "3.6"
