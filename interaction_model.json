@@ -20,7 +20,7 @@
                   "samples": []
               },
               {
-                  "name": "GetNewEvent",
+                  "name": "GetNewEventIntent",
                   "samples": [
                       "dime algo interesante",
                       "cuentame algo interesante",
