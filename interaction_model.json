@@ -1,35 +1,69 @@
 {
-  "interactionModel": {
-      "languageModel": {
-          "invocationName": "un dia como hoy",
-          "intents": [
-              {
-                  "name": "AMAZON.CancelIntent",
-                  "samples": []
-              },
-              {
-                  "name": "AMAZON.HelpIntent",
-                  "samples": []
-              },
-              {
-                  "name": "AMAZON.StopIntent",
-                  "samples": []
-              },
-              {
-                  "name": "AMAZON.NavigateHomeIntent",
-                  "samples": []
-              },
-              {
-                  "name": "GetNewEventIntent",
-                  "samples": [
-                      "dime algo interesante",
-                      "cuentame algo interesante",
-                      "dime algo",
-                      "cuentame algo"
-                  ] 
-              }  
-          ],
-          "types": []
-      }
-  }
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "un dia como hoy",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": [
+                        "cancelar"
+                    ]
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": [
+                        "qué puedo hacer",
+                        "que puedo hacer",
+                        "ayudame",
+                        "ayuda"
+                    ]
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": [
+                        "stop",
+                        "terminar",
+                        "fin",
+                        "para"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": [
+                        "inicio"
+                    ]
+                },
+                {
+                    "name": "GetNewEventIntent",
+                    "slots": [],
+                    "samples": [
+                        "algún dato curioso",
+                        "algun dato curioso",
+                        "un dato curioso",
+                        "algo curioso",
+                        "un dato interesante",
+                        "algún dato interesante",
+                        "algun dato interesante",
+                        "obtén algo interesante",
+                        "obten algo interesante",
+                        "obtén algo",
+                        "obten algo",
+                        "obtenme algo",
+                        "obtenme algo interesante",
+                        "dame algo interesante",
+                        "sobre algo interesante",
+                        "algo interesante",
+                        "por algo interesante",
+                        "cuéntame algo interesante",
+                        "cuéntame algo",
+                        "dime algo interesante",
+                        "cuentame algo interesante",
+                        "dime algo",
+                        "cuentame algo"
+                    ]
+                }
+            ],
+            "types": []
+        }
+    }
 }
